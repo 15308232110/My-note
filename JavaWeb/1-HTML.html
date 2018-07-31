@@ -1,0 +1,137 @@
+1、html简介
+	1)HyperText Markup Language:超文本标记语言，最基础的网页语言
+		1.超文本:超出文本的范畴
+		2.标记:html所有的操作都通过标记(标签)实现
+		3.html后缀是.html或.htm，不需要编译
+		4.html的规范
+			1*必须有html标签、头标签(设置页面相关信息)、体标签(页面内容)
+			2*标签有头有尾，有些在标签内结束
+			3*不区分大小写
+			4*属性与属性值之间用"="号连接，属性值用''或""括起来，也可不用引号
+		5.html的操作思想
+			一个标签相当于一个容器，使用标签把要操作的数据包起来后通过修改标签的属性值来实现标签内数据样式的变化
+
+2、标签
+	
+	1)head
+
+		<title>
+
+		<meta>模拟响应头
+
+		<base target="···"/>为本页面所有的表单和超链接指定显示内容的框架
+
+	2)body
+
+		文字<font size="1~7，默认3，超7算7" color="可用英文单词或十六进制数表示(RGB)表示">
+
+		换行<br/>、强调<strong>、加粗<b>、斜体<i>、下划线<u>、删除线<s>、注释<!--内容，html注释不能注释一些标签，后面会提到-->
+
+		下标<sub>、上标<sup>、格式<pre>、<div align="">自动换行、<span>一行显示标签
+
+		段落<p align="left、center、right">空行
+		
+		水平线<hr size="粗细" width="长度" color=""/>
+
+		标题<h? align="">:加粗空行，h1~h6字体依次变小
+
+		图像<img(image) src="" width="" height="" border="边框粗细" alt="当图像无法显示该文本"/>
+
+
+
+		列表<dl>
+				<dt>上层内容</dt>
+				<dd>下层内容1</dd>
+				<dd>下层内容2</dd>
+				······
+			</dl>
+
+		有序<ol type="1(默认)、a、i、A、I" start="">
+				<li>内容</li>
+				<li>内容</li>
+				<li value="1">内容</li>
+				······
+			</ol>
+
+		无序<ul type="disc实心圆(默认)、circle空心圆 、square实心方块">
+				<li>内容</li>
+				······
+			</ul>
+
+
+
+		链接<a href="本地资源或网络资源、空为打开本地文件目录(目前浏览器无用)、#为无效链接、javascript函数" target="_self(默认)、_blank">
+		在href中加一个http://表示一个网络的公共协议，则访问资源会被自动识别为网络资源
+		当浏览器找到相关协议，先看这个协议是不是公共协议http，不是则会去本地电脑找支持这个协议的应用程序。
+		定位资源<a name="top">顶部</a>、<a href="#top">回到顶部</a>
+		
+
+
+		表格<table border="表格线粗细" bordercolor="表格线的颜色" cellspacing="单元格间距"  cellpadding="单元格边距" 
+				   bgcolor="背景色" width="" height="">
+				<caption>表格标题</caption>
+				<tr align="整行对齐方式" bgcolor="整行背景色">
+					<td align="本单元格的对齐方式" bgcolor="单元格景色" rowspan="列合并" colspan="行合并" width="" height=""></td>
+					<th>居中加粗</th>属性与td相同
+					······
+				</tr>
+			</table>
+		先数有多少行，再数多少列
+
+
+
+		表单<form action="" method="get、post" enctype="用于文件上传" target="">
+
+			get(默认):提交数据会在地址栏显示出来，没有请求体，请求数据大小受限(0~1kb)，安全性低，
+			不可以用于提交二进制数据，比如上传文件，超链接和地址栏访问采用的是get方式
+			post:提交数据在请求体中，请求数据大小不限，安全性高，可用于提交二进制数据，请求参数默认使用URL编码
+
+			id:编号，用于前端区分唯一性，一般与name一致
+			name:名称，用于后端区分唯一性，提交数据必须存在name
+
+			输入标签<input>
+			普通输入项<input type="text"/>
+			密码<input type="password"/>
+			单选<input type="radio"/>
+			复选<input type="checkbox"/>	单选和复选中每个选项都需要相同的name属性值，checked="checked"表示默认选项
+			文件<input type="file"/>
+			下拉<select name="" multiple="multiple">
+					<option value="1991" selected="selected">1991</option>
+					<option value="1992">1992</option>
+					······
+				 </select>
+			文本域<textarea cols="行字节数" rows="列数"></textarea>
+			隐藏项<input type="hidden" />
+			提交按钮<input type="submit" value=""/>
+			使用图片提交<input type="image" src=""/>
+			重置<input type="reset"/>
+			普通<input type="button" value=""/>
+
+
+
+		框架<frameset rows="">上下两部分 
+				<frame name="" src="">上
+				<frameset cols="">下分左右两部分
+					<frame name="" src="">左，在右边显示连接内容<a href="" target="right">
+					<frame name="right" src="">右
+				</frameset> 
+			</frameset>
+		框架标签不能写在body中，需要把body去掉
+
+
+
+3、路径
+	1)绝对路径
+		- C:\Users\asus\Desktop\0413\day01\code\a.jpg
+		- http://www.baidu.com/b.jpg
+	2)相对路径
+		同级目录 :直接写
+		下层目录: images/1.jpg
+		上层目录: ../(../../)
+
+
+4、特殊字符(转义)
+	1)  "<"  &lt;
+	2)  ">"  &gt;
+	3)	" "  &nbsp;
+	4)	"&"  &amp;

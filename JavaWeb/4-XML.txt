@@ -1,0 +1,201 @@
+1、XML简介
+	1)Extensible Markup Language可扩展标记型语言
+		1.标记:用标签操作
+		2.可扩展:标签可以自己定义，可以写中文标签
+	2)XML的功能
+		1.存储数据(主要)
+		2.显示数据
+	3)XML是W3C组织(World Wide Web Consortium)发布的技术
+	4)xml有两个版本1.0，1.1(不能向下兼容)
+	5)XML和properties属性文件的区别
+		1.属性文件只能存储平面信息，而XML可以存储结构化信息
+		2.解析属性文件只需使用Properties类就可以了，而解析XML文档很复杂
+	6)XML的应用
+		1.不同的系统之间传输数据
+		2.用来表示生活中有关系的数据
+		3.配置文件
+
+
+2、语法
+	1)文档声明
+		1..xml文件必须有文档声明<?xml version="" encoding=""(可选的，默认UTF-8) standalone="是否需要依赖其他文件:yes/no"(可选的)?>
+		2.文档声明必须写在第一行第一列，注释都不能打破这条规则
+		3.encoding设置打开格式，如果保存格式与之不匹配就会出现乱码
+	2)标签(XML元素)
+		1.标签有头有尾，不含标签主体在标签内结束
+		2.标签可以嵌套
+		3.一个XML文档必须有且只能有一个根标签
+	  (规范)4.区分大小写
+		5.不能以数字、"_"或xml(不区分大小)开头。
+		6.不能包含" "或":"
+	3)属性
+		1.多个属性的属性名不能相同
+		2.属性和属性值之间用"="连接，属性值使用单引号或双引号括起来
+		3.属性名称规范元素名称规范一致
+	4)注释<!--注释不能嵌套-->
+	5)转义
+		1.&amp;	      &
+		2.&lt;	      <
+		3.&gt;        >
+		4.&apos;      '
+		5.&quot;      "
+		6.CDATA区(Character Data)<![CDATA[内容]]>不再把特殊字符当做标签
+	6)PI指令(处理指令)(Processing Instruction)用于设置样式<?xml-stylesheet type="text/css" href="CSS文件路径"?>(对中文标签不起作用)
+	
+
+3、约束规定了XMLl中只能出现的内容，不遵循则报错，注意浏览器不负责校验约束，需要使用工具
+	1)DTD
+		1.有多少种元素就写几个<!ELEMENT>
+		2.定义元素
+			1*复杂元素:有子元素的元素<!ELEMENT 元素名称 (子元素)>
+				1-?(0~1，默认)、+(1~n)、*(n)
+				2-,(规定出现顺序)、|(出其一)
+			2*简单元素:没有子元素<!ELEMENT 元素名 约束>
+				1-(#PCDATA)字符(Parsed Character Data)
+				2-EMPTY没有内容
+				3-ANY任意，可以包含DTD中定义的元素内容
+		3.定义属性<!ATTLIST 元素名称
+				属性名称 属性类型 属性的约束
+				······
+			>(重复定义的属性采用最初的定义方式，属性定义可以嵌套)
+			1*CDATA字符
+			2*枚举(xx|xx|xx)
+			3*ID以字母或"_"开头，具有唯一性且该类型属性一个标签只能出现一次
+							   不能与固定值和默认值搭配使用			
+			4*#REQUIRED必须存在
+			5*#IMPLIED可有可无
+			6*#FIXED固定值<!ATTLIST xx xx xx #FIXED "xx">(可不必显示指出)
+			7*默认值<!ATTLIST xx xx xx "xx">不显示指出就使用默认值
+		4.实体<!ENTITY 实体名 "实体值">&实体名;(写在内部dtd)
+		5.引入DTD(三种方式)
+			1*外部文件<!DOCTYPE 根元素名称 SYSTEM "DTD文件路径">
+			2*内部文件<!DOCTYPE 根元素名称[约束内容]>
+			3*网络文件<!DOCTYPE 根元素 PUBLIC "DTD名称" "DTD文档的URL">
+	2)SCHEMA
+		1.有多少种元素就写几个<element></element>
+		2.定义元素
+			1*简单元素仅包含文本，不包含任何其他的元素或属性<element name="xxx" type=""></element>
+			2*复杂元素包含子元素或属性<complexType><属性定义标签>子元素</······></complexType>
+				1-<sequence>按顺序且固定出现一次
+				2-<all>:任意顺序且固定出现一次
+				3-<choice>:出其一且固定出现一次
+				4-maxOccurs="n"可出现1~n次，n取unbounded表示无限次数
+				5-<any/>:表示任意元素，用在多XSD文件情况
+		3.定义属性
+			只能写在复杂元素的</complexType>之前
+			<attribute name="属性名" type="属性类型" use="是否必须出现"></attribute>
+			prohibited不能出现、required必须出现、optional可有可无
+		4.引入XSD文件
+			<根元素 xmlns:别名1="http://www.w3.org/2001/XMLSchema-instance"(表示xml是一个被约束文件)
+			xmlns="约束文件地址"
+			······
+			别名1:schemaLocation="约束文件地址 XSD文件路径······">
+			别名是唯一的命名空间，用来声明标签来源<别名:标签名><别名:标签名>
+	3)SCHEMA较DTD的不同
+		1.符合XML的结构，语法更复杂，限制更细致，并且XSD文件自身就是XML文件
+		2.支持更多的数据类型，包括自定义数据类型
+		3.一个XML中可以有多个SCHEMA，通过命名空间区分
+		4.根节点固定<schema>
+			1.xmlns="http://www.w3.org/2001/XMLSchema"表示当前文件是约束文件
+			2.targetNamespace="文件地址"
+			3.elementFormDefault="qualified"
+
+
+4、DOM解析和SAX解析
+	1)DOM解析是W3C推荐的处理XML的一种方式
+		根据xml的层级结构在内存中分配一个树形结构，把XML的标签、属性和文本都封装成对象
+		缺点:如果文件过大，造成内存溢出
+		优点:方便增删改操作
+	2)SAX解析不是官方标准，属于开源社区XML-DEV
+		采用事件驱动，边读边解析，从上到下逐行解析并返回对象
+		缺点:不能增删改操作
+		优点:不会造成内存溢出，方便查询操作
+	3)解析器
+		不同公司和组织通过API方式提供针对DOM和SAX方式的解析器，
+		1.JAXP---SUN公司
+		2.DOM4J--DOM4J组织(常用开源)
+		3.JDOM---JDOM组织
+
+
+5、JAXP
+	JAXP是JAVASE的一部分
+		1)DocumentBuilder:解析器类，抽象类
+			parse("XML文件路径")方法获取Document接口，可以到其父接口是Node中去找方法
+			Document中的方法
+				1.getElementsByTagName返回NodeList
+					NodeList list
+						1*getLength
+						2*item通过下标返回元素
+				2.createElement创建标签
+				3.createTextNode创建文本
+				4.appendChild把文本添加到标签下面
+				5.removeChild删除节点
+				6.getParentNode获取父节点
+		2)DocumentBuilderFactory:解析器工厂，也是抽象类
+			1.newInstance获取实例
+			2.newDocumentBuilder获取DocumentBuilder对象
+		3)SAXParser:解析器类
+		4)SAXParserFactory:解析器工厂
+	JAXP实现的操作
+		DOM解析:
+		1)创建DocumentBuilderFactory
+		2)创建DocumentBuilder
+		3)parse("XML文件路径")方法获取Document
+		4)操作
+			1.查询	
+				遍历NodeList集合得到每个元素的文本内容
+			2.添加
+				通过集合下标得到指定标签
+				创建标签和文本并添加内容
+				回写
+					1-创建TransformerFactory
+					2-创建Transformer
+					3-调用transform(new DOMSource(),new StreamResult("XML文件路径"))方法
+			3.修改
+				通过集合下标得到指定标签
+				设置文本内容
+				回写
+			4.删除
+				通过集合下标得到指定标签
+				通过父节点删除
+				回写
+			5.遍历
+				通过子节点集合下标得到子节点递归调用
+				Node对象.getNodeType()==Node.ELEMENT_NODE
+		SAX解析
+			1.创建SAXParserFactory
+			2.创建SAXParser
+			3.parse("XML文件路径"，DefaultHandler处理器子类对象)子类需要覆盖父类的三个方法
+				解析到开始标签时候，自动执行startElement方法
+				解析到文本时候，自动执行characters方法
+				解析到结束标签时候，自动执行endElement方法
+
+
+6、DOM4J
+	DOM4J不是JAVASE的一部分，需要手动导包dom4j-1.6.1.jar到创建的lib文件夹中，再添加到生成路径(奶瓶)
+	1)创建SAXReader
+	2)得到Document
+	3)获取根节点或集合   
+		1.查询
+			通过element、elements、elements(无参)、get和getText五种方法实现(for循环泛型)
+		2.末尾添加
+			通过addElement、setText(修改)方法实现，addText(追加)
+			回写
+				1-获取OutputFormat  PrettyPrint打印格式和CompactFormat压缩格式可以setEncoding
+				2-创建XMLWriter
+				3-回写并关闭流
+		3.指定添加
+			DocumentHelper.createElement、add和回写
+		4.删除
+			通过子节点调用remove后回写
+		5.属性查询添加
+			attributeValue、addAttribute并回写
+	XPATH
+	1)"/"表示层级
+	2)"//"忽略层级
+	3)"*"所有
+	4)"[]"可指定索引last()，也可指定条件
+	5)"@"属性，[not(@*)][normalize-space(@name)='xxx']
+	6)默认的情况下，DOM4J不支持XPATH，需要手动导包jaxen-1.1-beta-6.jar
+		selectNodes("XPATH表达式")
+		selectSingleNode("XPATH表达式")

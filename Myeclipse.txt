@@ -1,0 +1,71 @@
+Myeclipse是一个收费的插件，Eclipse:是一个免费的开发工具
+
+破解Myeclipse
+	1.关闭Myeclipse
+	1.运行crack.bat
+	2.Usercode任意写，选择BLUE
+	3.点击两次SystemId生成SystemId后点击Active
+	4.Tools->SaveProperties
+	5.将patch文件夹所有内容复制到Myeclipse安装目录的plugins文件夹中
+	6.重启Myeclipse
+	7.Myeclipse->Subscription可查看截止期
+
+新建工作空间
+	1. General --> Workspace --> UTF-8
+	2. General --> Editors --> Associations --> JSP --> MyEclipse JSP Editor
+	3. 搜索jsp --> UTF-8
+	4. Java --> Installed JREs --> 添加本地JDK
+	5. Java --> Compiler --> Errors/Warnings --> Deprecated and restricted API --> Forbidden reference --> Ignore
+	6. 换模板:将模板放入Myeclipse安装目录的plugins中，并替换
+
+快捷键
+	1.导包			Ctrl+1
+	2.快速导包		Ctrl+Shift+O
+	3.添加/去除单行注释	Ctrl+/
+	4.添加多行注释		Ctrl+Shift+/
+	5.去除多行注释		Ctrl+Shift+\
+	6.删除行		Ctrl+D
+	7.格式化		Ctrl+Shift+F(Source->Format)
+	8.打开Source		Alt+Shift+S
+	9.整行移动		Alt+上/下
+	10.整行复制		Ctrl+Alt+上/下
+	11.根据内容向下搜索	Ctrl+K
+	12.根据内容向上搜索	Ctrl+Shift+K
+	13.搜索类		Ctrl+Shift+R
+	14.打开类列表		Ctrl+O
+	15.查询来源		Ctrl+鼠标左键
+	16.大写			Ctrl+Shift+X
+	17.小写			Ctrl+Shift+Y
+	18.继承树		Ctrl+T
+	19.切换编辑页面		Ctrl+F6
+
+JUint单元测试
+	1.JUint不是JAVASE的一部分，想要使用导入jar包(Myeclipse自带)
+	2.测试方法写在与src同级目录的Source Floder文件夹的与测试类的包名相同包名中
+	3.测试方法被@Test注解，必须被public修饰，无返回值和参数列表，可抛异常
+	4.Run As->JUnit Test:点击方法名为指定方法运行，点击类体任意位置为全部方法运行，绿通过红失败
+	5.@Ignore表示这个方法不参加单元测试，不能单独执行
+	6.@Before只在每个方法开始执行前执行，不能单独执行
+	7.@After 只在每个方法结束执行后执行，不能单独执行
+	8.@BeforeClass会在单元测试执行之前执行一次 这个方法必须是static，不能单独执行
+	9.@AfterClass 会在单元测试执行之后执行一次 这个方法必须是static，不能单独执行
+	10.断言Assert.assertEquals(期望值,实际值)
+
+Debug调试	
+	1.F5->进入下层
+	2.F7->返回上层
+	3.F6->单步运行 
+	4.F8->全部运行
+	5.Drop to Frame:回到方法起点
+
+其他需要掌握的操作
+
+	1.引入本地JDK
+	2.Run As->Java Application  
+	3.Navigator查看底层源码
+	4.Coyp Qualified Name复制完整类名
+	5.Build Path->Add to Build Path
+	6.导入源代码：Attach Source -> External location
+	7.复制项目需要修改 Context root：properties->Web Project Settings 
+	8.使用BASE64Encoder及BASE64Decoder：右键项目 -> Bulid Path -> Configure Bulid Path -> Library -> Jre System Library -> Access Rules
+										-> Edit -> Add -> Resolution:Accessible，Rule Pattert：** -> OK

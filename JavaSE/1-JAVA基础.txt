@@ -1,0 +1,79 @@
+Java
+
+  计算机语言的三个阶段:机器语言、低级语言、高级语言，Java之父是James Gosling，95年有了Oak，Oak改名为Java
+  
+  Java分三大块:JAVASE(J2SE)(后两者的基础)、JAVAEE(J2EE)、JAVAME(J2ME)，Java底层是C++
+  
+  Java语言特性：1.简单性  2.面向对象  3.可移植性(一次编译到处运行，跨平台)  4.健壮性(自动垃圾回收机制)  5.多线程
+  
+  JDK-Java开发工具箱、JRE-Java的运行时环境、JVM-Java虚拟机
+  
+  Java的加载与执行：1.编译阶段：1.创建.java源文件，写入高级语言
+								2.将源文件通过Java编译器编译成.class字节码文件(检查语法的阶段，.java -> .class)
+
+					2.运行阶段：1.类装载器将.class文件装载到JVM
+								2.JVM将.class文件解释成二进制数据给操作系统
+							    3.操作系统凭借二进制数据与硬件平台交互  
+  Java安装
+  
+    JDK下载网站:http://www.oracle.com/technetwork/java/javase/downloads/index.html(JDK中自带JRE，所以可以不安装JRE)
+    JDK中src.zip中的.java文件对应jre\lib\rt.jar(核心jar包)中的.class文件
+    bin目录下的文件为运用程序
+    
+  配置环境变量和编译运行
+  
+    PATH:用于配置应用程序(F:\development\Java\jdk1.8.0_171\bin)，配置完成后关闭小黑屏重启才会在生效
+    CLASSPATH(只有Java才有):限定JVM对.class文件的搜索路径，配置了会直接在指定路径找.class文件，不用再到当前路径下编译，但一般不配
+    编译:javac 类名.java文件的路径，一个类中用到其他类，编译这个类时也可以同时编译到其他类
+    运行:java 类名，未配CLASSPATH的情况下在当前路径下搜索.class文件
+      
+  注释
+  
+    注释不影响代码运行阶段
+
+    三种注释:	1.//    单行注释，只能用在一行的最后使用
+				2./*
+				   *    多行注释，可以用在一行代码中间，但不能分割单词
+				   */
+				3/**
+				  *     文档注释(可以被javadoc工具解析成帮助文档)
+				  */  
+      
+  Java的基础规范
+        
+    类体中不能直接编写java语句
+    一个.java源文件可以定义多个类，每个类都可以有main方法，运行哪个类，哪个类就执行，并且每个class都会生成一个.clss文件
+    一个.java源文件中可以没有被public修饰的类，但如果有，就只能有一个，并且文件名就是这个类名称
+    
+文件保存格式和安装问题
+
+	显示详细信息、取消隐藏已知文件类型的扩展名后再应用到文件夹
+	安装文件所在路径和安装路径都不要包含中文和空格
+
+三、Windows操作系统基本命令
+
+   exit~退出 
+   
+   标记~用于复制 
+   
+   dir~目录下的列表
+   
+   cls~清空打印台
+   
+   ipconfig/ipconfig /all~显示ip地址
+   
+   native2ascii~查询字符的Unicode码
+   
+   x:切盘、cd /：切到根目录、cd..：切到上级目录，注意:切换绝对路径记得要切盘
+   
+   control+c：停止
+   
+   del：删除文件，如：del *.class
+   
+   set java_home：查看JAVA_HOME环境变量值
+   
+   set classpath=xxxxx;配置临时的classpath路径
+   
+   shutdown -s -t 关机倒计时，以秒为单位
+   
+   shutdown -a 撤销

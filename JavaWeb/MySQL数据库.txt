@@ -1,0 +1,388 @@
+数据库就是用来存储和管理数据的仓库！
+
+
+常见数据库:
+
+	MySQL -> 甲骨文（关系型）								Sybase -> 赛贝斯			
+	DB2 -> IBM					SQL Server -> 微软			Oracle(神喻，市场占有率最高！) -> 甲骨文				
+		
+
+理解数据库
+
+	现在所说的数据库泛指关系型数据库管理系统（RDBMS - Relational database management system），即数据库服务器。	
+	RDBMS = 1个manager + n个database
+	database = n个table
+	table：表结构 + 表记录，表结构定义表的列名和列类型，表记录是显示的结果集
+
+
+应用程序与数据库
+										 操作和查询数据
+			应用程序◢───────────────────────────────────────────────◣数据库服务器
+	向数据库请求数据并显示结果			 响应和提供数据				     修改数据
+
+============================================================================================================================================
+
+安装MySQL:参见MySQL安装图解.doc
+
+	1. MySQL安装成功后会在两个目录中存储文件：
+
+		F:\development\MySQL：DBMS管理程序
+		C:\ProgramData\MySQL\MySQL Server 5.5\data：DBMS数据库文件(卸载MySQL时不会删除这个目录，需要自己手动删除)
+
+	2. MySQL重要文件:
+
+		bin\mysql.exe：客户端程序，用来操作服务器，必须保证服务器程序已开启！可以同时多次操作数据库，在任务管理器中可查看进程数
+		bin\mysqld.exe：服务器程序
+		my.ini：服务器配置文件，是最为重要的配置文件，可以配置端口号(默认为3306)，字符编码以及二进制数据大小上限
+		DBMS数据库文件目录下的每个目录表示一个数据库，每个目录下的每个frm文件都是一个table，它们由DBMS来读写
+
+
+卸载MySQL
+
+	1.停止MySQL，两种方式：在Windows命令中关闭或关闭MySql服务：计算机-->管理-->服务和应用程序-->服务-->MySQL-->停止  
+	2.卸载MySql，控制面板-->卸载程序-->MySQL-->卸载
+	3.删除MySQL，删除安装目录和C:\ProgramData\MySQL目录
+	4.regedit->HKEY_LOCAL_MACHINE\SYSTEM-->搜索mysql项，搜索到的全删！
+	5.重启电脑
+
+
+服务器操作：开启服务器：net start mysql、关闭服务器：net stop mysql，可以在任务管理器中查看服务器状态（mysqld.exe）
+	
+
+客户端操作
+
+	1. 登录服务器：mysql -u用户名 -p密码 -hIP地址，三个属性顺序可改变，在-p后直接回车可以安全登录，但必须先指出用户名
+												   IP地址默认为localhost，有些用户的IP地址不需要写或任意写一个正确的IP地址即可
+	2. 退出服务器：exit或quit
+
+	3.修改用户密码：进入数据库 -> update user set password=password('1234') where user='root' -> 重启服务器程序后生效
+
+============================================================================================================================================
+
+SQL就是结构化查询语言(Structured Query Language)
+
+	1.作用：使客户端操作服务器
+	2.SQL标准(例如SQL99，即1999年制定的标准)：由国际标准化组织(ISO)制定的，对DBMS操作的统一方式(例如相同的语句可以操作：mysql、oracle等)。
+	3.SQL方言：某种DBMS独有的语法
+	4.语法：SQL语句可以在单行或多行书写，在小黑屏中必须以分号结尾、可使用空格和缩进、MySQL不区别大小写，但建议关键字使用大写
+
+
+SQL语句分类
+
+	1. DDL（Data Definition Language）：			数据定义语言，对数据库或表的结构进行操作
+	2. DML（Data Manipulation Language）：			数据操作语言，对表的记录进行更新
+	3. DCL（Data Control Language）：				数据控制语言，对用户创建和授权
+	4. DQL（Data Query Language）：					数据查询语言，对表的记录的查询，不会对数据造成修改
+	5. CCL（Cursor Control Language）：				游标控制语言
+	6. TPL（Transaction Processing Language）：		事务处理语言
+
+
+DDL
+
+	1. 数据库
+
+		查看所有数据库：	SHOW DATABASES
+		切换数据库：		USE 数据库名
+		创建数据库：		CREATE DATABASE [IF NOT EXISTS] 数据库名 [CHARSET=utf8](不指定就采用默认编码，注意utf-8没"-")
+		删除数据库：		DROP DATABASE [IF EXISTS] mydb1
+		修改数据库编码：	ALTER DATABASE 数据库名 CHARACTER SET utf8
+
+
+	2. 数据类型(列类型)
+
+		int：				整型
+		double：			浮点型，例如double(5,2)表示最多5位，其中有2位小数，即最大值为999.99；
+		decimal：			浮点型，对金钱方面使用该类型，因为不会出现精度缺失问题；
+		char：				固定长度字符串类型；char(255)，数据的长度不足指定长度，补足到指定长度！最大为255
+		varchar：			可变长度字符串类型；varchar(65535)，不补！但会单独使用一些字节来记录数据长度！最大为65535
+		text(标准为clob)：	可变长字符串类型；MySQL独有类型(SQL Server中也有它)
+
+			tinytext		2^8-1(约256B)
+			text			2^16-1(约64K)
+			mediumtext		2^24-1(约16M)
+			longtext		2^32-1(约4G)
+
+		blob：				可变长字节类型(二进制)；
+
+			tinyblob		2^8-1
+			blob			2^16-1
+						2^24-1
+			longblob		2^32-1
+
+		date：				日期类型，格式为：yyyy-MM-dd
+		time：				时间类型，格式为：hh:mm:ss
+		timestamp：			时间戳类型；格式为：yyyy-MM-dd hh:mm:ss
+
+
+	3. 表
+
+		创建表：						CREATE TABLE [IF NOT EXISTS] 表名(列名 列类型,列名 列类型,···);
+		查看当前数据库中所有表：		SHOW TABLES;
+		查看指定表的创建语句：			SHOW CREATE TABLE 表名;
+		查看表结构：					DESC 表名;
+		删除表：						DROP TABLE 表名;
+		修改表：修改之添加列：			ALTER TABLE 表名 ADD (列名 列类型,列名 列类型,···);
+				修改之修改列类型：		ALTER TABLE 表名 MODIFY 列名 列类型;
+				修改之修改列名：		ALTER TABLE 表名 CHANGE 原列名 新列名 列类型;
+				修改之删除列：			ALTER TABLE 表名 DROP 列名;
+				修改表名称：			ALTER TABLE 原名 RENAME TO 新表名;
+				修改表时指定主键：		ALTER TABLE stu ADD PRIMARY KEY(列名);
+				删除主键：				ALTER TABLE stu DROP PRIMARY KEY;
+				添加外键约束	        ALTER TABLE 外键表 ADD CONSTRAINT 约束名称 FOREIGN KEY(外键列) REFERENCES 关联表(关联表主键列);
+				删除外键约束			ALTER TABLE 外键表 DROP FOREIGN KEY 约束名称
+
+
+DML
+
+	插入数据：		INSERT INTO 表名(列名1,列名2, ...) VALUES(列值1, 列值2, ...);
+					在数据库中所有的字符串类型，必须使用单引，不能使用双引！日期类型也要使用单引！没有指定的列插入null，所以总是插入一行
+					在VALUES中给出列值，个数和顺序与列对应，不给出插入列默认插入所有列！这时列值的个数和顺序要与创建表时相同，多列用","隔开
+				
+	修改数据		UPDATE 表名 SET 列名1=列值1, 列名2=列值2,··· [WHERE 条件]; 条件必须是一个boolean类型的值或表达式
+					运算符：=、!=、<>、>、<、>=、<=、BETWEEN...AND、IN(...)、IS NULL、NOT、OR、AND
+
+	删除数据		DELETE FROM 表名 [WHERE 条件];
+
+
+DCL
+
+	1. 创建用户				CREATE USER 用户名@IP地址 IDENTIFIED BY '密码';IP地址为'%'表示对IP没有限制
+	2. 给用户授权			GRANT 权限1,权限2···(all) ON 数据库.* TO 用户名@IP地址
+	3. 撤销授权				REVOKE 权限1,权限2···(all) ON 数据库.* FROM 用户名@IP地址;
+	4. 查看权限				SHOW GRANTS FOR 用户名@IP地址
+	5. 删除用户				DROP USER 用户名@IP地址
+
+
+DQL
+
+		1.查询所有列				SELECT * FROM 表名;
+		2.查询指定列				SELECT 列1,列2··· FROM 表名;
+		3.不重复查询				在查询列前面加 DISTINCT
+
+		4.列运算					不属于数字类型的类型在运算时被当做0处理，任何数据跟null运算都等于null
+									SELECT IFNULL(, 0)+1000 FROM emp;	将null变为0
+									SELECT CONCAT('我叫',ename,',我的工作是',job) FROM emp;  字符串，有null结果就为null
+
+		5.别名						SELECT IFNULL(comm, 0)+1000 AS 奖金 FROM emp;	AS可以省略
+
+		6.条件查询					使用WHERE关键字指定查询范围
+		7.模糊查询					使用LIKE关键字，"_"匹配一个字符，"%"匹配0~N个字符，如果只有"%"表示忽略null
+		
+		8.升序查询					ORDER BY 列名 ASC;		ASC可以省略，null在最前
+		9.降序排序					ORDER BY 列名 DESC;		DESC不能省略，null在最后
+		10.多列排序查询				ORDER BY 列名1 ASC,列名2 DESC,···
+
+		11.聚合函数：纵向运算，查询内容整行全部为null才忽略
+
+			COUNT()					"()"中可以指定列名或"*"，"*"为查询整行记录数，可以用任意数字代替，还有MAX、MIN、SUM、AVG四种聚合函数
+
+
+		12.分组查询					使用关键字GROUP BY，分组后的条件使用关键字HAVING限制，条件使用聚合函数
+
+
+		13.limit方言				LIMIT关键字用来限定查询结果的起始行，以及总行数。
+									例如查询起始行为第5行，一共查询3行记录：SELECT * FROM emp LIMIT 4, 3;
+									查询指定页内容时：起始页为(当前页-1)*每页记录数
+
+		以上关键字顺序  SELECT    FROM    WHERE    GROUP BY    HAVING    ORDER BY    LIMIT
+
+============================================================================================================================================
+
+单表练习
+
+	1.查询出部门编号为30的所有员工：SELECT * FROM emp WHERE deptno=30;
+
+	2.查询所有销售员的姓名、编号和部门编号：SELECT ename, empno, deptno FROM emp WHERE job='销售员';
+
+	3.找出奖金高于工资的员工：SELECT * FROM emp WHERE comm > sal
+
+	4.找出奖金高于工资60%的员工：SELECT * FROM emp WHERE comm > 0.6*sal;
+
+	5.找出部门编号为10中所有经理，和部门编号为20中所有销售员的详细资料：
+											
+		SELECT * FROM emp WHERE deptno=10 AND job='经理' OR deptno=20 AND job='销售员';
+
+	6.找出部门编号为10中所有经理，部门编号为20中所有销售员，和工资大或等于20000的所有非经理或销售人员的详细资料：
+	
+		SELECT * FROM emp WHERE deptno=10 AND job='经理' OR deptno=20 AND job='销售员' OR job NOT IN ('经理', '销售员') AND sal >= 20000;
+
+	7.无奖金或奖金低于1000的员工：SELECT * FROM emp WHERE comm IS NULL OR comm < 1000;
+
+	8.查询名字由三个字组成的员工：SELECT * FROM emp WHERE ename LIKE '___';
+
+	9.查询2000年入职的员工：SELECT * FROM emp WHERE hiredate LIKE '2000-%';
+
+	10.查询所有员工详细信息，用编号升序排序：SELECT * FROM emp ORDER BY empno;
+
+	11.查询所有员工详细信息，用工资降序排序，如果工资相同使用入职日期升序排序:SELECT * FROM emp ORDER BY sal DESC, hiredate;
+
+	12.查询每个部门的平均工资：SELECT deptno, AVG(sal) FROM emp GROUP BY deptno;
+
+	13.查询每个部门的雇员数量：SELECT deptno, COUNT(*) FROM emp GROUP BY deptno;
+	
+	14.查询每种工作的最高工资、最低工资、人数：SELECT job, MAX(sal), MIN(sal), COUNT(*) FROM emp GROUP BY job;
+	
+	15.查询非销售的人员和同工作雇员的月工资总和，满足月工资总合大于50000，结果按月工资总合升序排列：
+	
+		SELECT job,SUM(sal) FROM emp WHERE job!='销售员' GROUP BY job HAVING SUM(sal)>50000 ORDER BY SUM(sal);
+
+============================================================================================================================================
+
+编码
+	1. 查看MySQL数据库编码				SHOW VARIABLES LIKE 'char%';
+	  									如果在安装MySQL时就指定了默认编码为utf8，那么在操作时，就无需再次指定编码	  
+
+	2. 设置编码
+
+		character_set_client：MySQL使用该编码来解读数据  
+		character_set_results：MySQL使用该编码来编写数据
+	    可以使用语句set character_set_client=xxx;set character_set_results=xxx;来设置编码，但是只能在当前窗口内有效
+	    为了一劳永逸，可以在my.ini中设置：default-character-set=xxx，就可以修改client、results、connection三个变量，重启服务器程序后生效
+
+
+备份与恢复
+
+	mysqldump -uxxx -pxxx 数据库名>备份路径     备份数据库内容
+	mysql -uxxx -pxxx 数据库名<文件路径			恢复数据库数据，需要先创建库
+	登陆之后：source 文件路径;					恢复，需要登录，也需要先创建库
+
+============================================================================================================================================
+
+约束是添加在列上的，用来约束列的！
+
+    1. 主键就是一行记录的唯一标识，主键列的特性：非空、唯一、可被引用。
+
+		创建表时指定主键有两种方式：	在创建列名和列类型时指定主键：PRIMARY KEY关键字		在创建完表类型时指定主键：PRIMARY KEY(列名)
+		修改表时指定主键：				ALTER TABLE stu ADD PRIMARY KEY(列名);
+		删除主键：						ALTER TABLE stu DROP PRIMARY KEY;
+	    为了防止业务变更带来的变化，一般需要另写一个代理主键作为主键
+
+    2. 主键自增长
+
+	    主键自增长不适用于群集环境，指定自增长的主键列必须是数字类型
+	    创建表时指定主键自增长：			在给出列名和列类型后跟上PRIMARY KEY AUTO_INCREMENT关键字
+	    修改表时设置主键自增长：			ALTER TABLE stu CHANGE 列名 列名 列类型 AUTO_INCREMENT;
+	    修改表时删除主键自增长：			ALTER TABLE stu CHANGE 列名 列名 列类型;
+	    设置主键自增长后，添加数据时主键列设值可以为null，删除数据后再添加数据，主键值还是会接着上一次成功的添加的数据增长。
+
+    3. 非空约束		在列类型加关键字NOT NULL
+	  
+    4. 唯一约束		在列类型加关键字UNIQUE KEY(KEY可省略)
+	  
+    5. 概念模型
+
+		当我们要完成一个软件系统时，需要把系统中的实体抽取出来，形成概念模型。例如部门、员工。概念模型中的实体最终会
+		成为Java中的类、数据库中表。实体之间还存在着关系，关系有三种：1对多(学生和班级)、1对1(夫妻)、多对多(学生和老师)
+
+	    对象模型：可以双向关联，引用的是对象。例如员工类有部门类的成员变量，部门类也有员工类的引用。
+	    关系模型：只能多方引用一方，引用的是主键，而不是一整行记录。
+		
+
+    6. 外键		外键必须要引用主键，可以是本表的主键
+				外键可以重复
+				外键可以为空
+				外键不能超出主键的指定范围
+				一张表中可以有多个外键
+	  
+	  创建表时指定外键约束		    在属性定义完后添加：CONSTRAINT 约束名称 FOREIGN KEY(外键列) REFERENCES 关联表(关联表主键列);
+
+	  修改表时添加外键约束		    ALTER TABLE 外键表 ADD CONSTRAINT 约束名称 FOREIGN KEY(外键列) REFERENCES 关联表(关联表主键列);
+
+	  修改表时删除外键约束		    ALTER TABLE 外键表 DROP FOREIGN KEY 约束名称
+	  
+    7. 数据库关系
+
+		多对一关系			外键可重复，可为空
+		一对一关系			外键不可重复，不可为空，注意！一张表的主键也可以是这张表的外键
+		多对多关系			创建中间表，中间表的外键分别引用其他表的主键，外键也可重复，也可为空
+
+============================================================================================================================================
+
+多表查询
+
+	  1.合并结果集:			SELECT * FROM a	UNION [ALL] SELECT * FROM b; 要求合并的结果集的列类型和列数相同，加ALL就是不去除重复行
+
+	  2. 内连接：方言：		FROM 表1,表2 [WHERE 表1.xx = 表二.xx]				加where可去除笛卡尔积，并且不匹配的不显示，可以使用别名
+				 标准：		FROM 表1 INNER JOIN 表2 [ON 表1.xx = 表二.xx]		标准使用的是ON
+				 自然：		FROM 表1 NATURAL JOIN 表2							会自动找列名称匹配的列，会自动删除一列
+	  
+	  3. 外连接：左外：		FROM 表1 LEFT OUTER JOIN 表2 ON 表1.xx=表2.xx		左表不匹配的也显示出来，对应的右表用NULL补位
+				 右外：			     RIGHT
+				 左外自然：	FROM 表1 NATURAL LEFT OUTER JOIN 表2
+				 右外自然：					 RIGHT
+				 全外：		左外连接和右外连接合并结果集
+
+	  4.子查询：嵌套查询，多个查询语句在一起使用
+
+		出现的位置：	FROM后作为表(出现在这需要起别名)，WHERE后作为条件存在
+
+	    子表类型：单行单列：		WHERE后
+				  多行单列：		WHERE后，有三个关键字：IN、ALL和ANY，它们出现在结果集之前
+		    	  单行多列：		WHERE后，使用IN关键字：例如：WHERE(job,deptno) IN (SELECT * FROM emp WHERE ename='殷天正')
+		          多行多列：		FROM后
+
+============================================================================================================================================
+
+多表练习
+
+	1.查出至少有一个员工的部门。显示部门编号、部门名称、部门位置、部门人数。
+
+		SELECT * FROM dept d NATURAL JOIN (SELECT deptno,COUNT(*) num FROM emp GROUP BY deptno) e;
+
+	2.列出薪金比关羽高的所有员工。
+
+		SELECT * FROM emp WHERE sal>(SELECT sal FROM emp WHERE ename = '关羽');
+
+	3.列出所有员工的姓名及其直接上级的姓名。
+
+		SELECT e1.ename,IFNULL(e2.ename,'BOSS') 领导 FROM emp e1 LEFT OUTER JOIN emp e2 ON e1.mgr = e2.empno; 
+		
+	4.列出受雇日期早于直接上级的所有员工的编号、姓名、部门名称。
+		
+		SELECT e1.empno,e1.ename,d.dname 
+		FROM emp e1, emp e2, dept d 
+		WHERE e1.mgr = e2.empno AND e1.hiredate < e2.hiredate AND e1.deptno = d.deptno; 
+
+	5.列出部门名称和这些部门的员工信息，同时列出那些没有员工的部门。
+
+		SELECT d.dname,e.* FROM dept d LEFT OUTER JOIN emp e ON d.deptno = e.deptno;
+
+	6.列出所有文员的姓名及其部门名称，部门的人数。
+
+		SELECT e1.ename,d.dname,e2.sum
+		FROM emp e1,dept d,(SELECT deptno,COUNT(*) `sum` FROM emp GROUP BY deptno) e2
+		WHERE e1.deptno = e2.deptno AND e1.deptno = d.deptno AND e1.job = '文员';
+
+	7.列出最低薪金大于15000的各种工作及从事此工作的员工人数。
+		
+		SELECT job,COUNT(*) FROM emp GROUP BY job HAVING MIN(sal) > 15000;
+
+	8.列出在销售部工作的员工的姓名，假定不知道销售部的部门编号。
+
+		SELECT ename FROM emp WHERE deptno = (SELECT deptno FROM dept WHERE dname = '销售部');
+
+	9.列出薪金高于公司平均薪金的所有员工信息，所在部门名称，上级领导，工资等级。
+
+		SELECT e1.*,IFNULL(d.dname,'无') 部门,IFNULL(e2.ename,'BOSS') 领导,s.grade
+		FROM emp e1 LEFT OUTER JOIN emp e2 ON e1.mgr = e2.empno
+					LEFT OUTER JOIN dept d ON e1.deptno = d.deptno
+					LEFT OUTER JOIN salgrade s ON e1.sal BETWEEN s.losal AND s.hisal
+		WHERE e1.sal > (SELECT AVG(sal) FROM emp);
+
+	10.列出与庞统从事相同工作的所有员工及部门名称。
+
+		SELECT e.*,d.dname FROM emp e NATURAL JOIN dept d WHERE e.job = (SELECT job FROM emp WHERE ename = '庞统');
+
+	11.列出薪金高于在部门30工作的所有员工的薪金 的员工姓名和薪金、部门名称。
+		
+		SELECT e.ename,e.sal,d.dname FROM emp e NATURAL JOIN dept d WHERE e.sal > ALL(SELECT sal FROM emp WHERE deptno = 30);
+
+	12.列出每个部门的员工数量、平均工资。
+
+		SELECT deptno,COUNT(*),AVG(sal) FROM emp GROUP BY deptno;
+	
+	13.查出年份、利润、年度增长比
+
+		SELECT y1.*,IFNULL(CONCAT((y1.money - y2.money) / y2.money * 100,'%'),'0%') 增长比
+		FROM `year` y1 LEFT OUTER JOIN `year` y2 
+		ON y1.year = y2.year + 1;

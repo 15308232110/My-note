@@ -1,0 +1,56 @@
+1、CSS简介
+	1)Cascading Style Sheets层叠样式表(样式表有很多属性和属性值)
+	2)CSS将网页内容和显示样式进行分离，解决了代码重复定义，并提高了显示功能
+	3)注释:/*注释内容*/
+	4)规范:属性与属性值用":"连接，属性之间用";"隔开，一个属性的多个值用" "隔开
+
+
+2、CSS与HTML的四种结合方式，后加载的有限极高
+
+	1)<div style="background-color:red;color:green;">
+
+	2)<style type="text/css">div{background-color:blue;color: red;}</style>(head)
+	
+	3)<link rel="stylesheet" type="text/css" href="css文件路径" />(head)
+
+	4)<style type="text/css">@import url(css文件路径);</style>(兼容性差)
+
+
+3、CSS的三种基本选择器
+	
+	1)标签选择器:div{}
+
+	2)class选择器:div.classname{}、p.classname{}、.classname{}，在标签中定义class属性和属性值
+
+	3)id选择器:div#id{}、p#id{}、#id{}，在标签中定义id属性和属性值
+
+	优先级:style > id > class > 标签
+
+
+4、CSS的三种扩展选择器
+
+	1)关联选择器:div p{}--><div><p>内容</p></div>
+	
+	2)组合选择器:div,p{}
+	
+	3)伪元素选择器:a:link{}、a:hover{}、a:active{}、a:visited{}
+
+
+5、CSS的盒子模型
+
+	1)边框:统一设置:border:2px solid实现(dashed虚线) blue
+		   分别设置:border-top、bottom、left、right
+
+	2)内边距:统一设置:padding:20px
+			 分别设置:padding-top、bottom、left、right
+
+	3)外边距:统一设置:margin:20px;
+			 分别设置:margin-top、bottom、left、right
+
+
+6、CSS的布局
+	
+	1)漂浮:float:none(默认不漂浮)、left、right;
+
+	2)定位:position:static(默认不定位)、absolute(层叠拖出)、relative(层叠不拖出)
+		   再使用top、left、bottom、right来绝对定位

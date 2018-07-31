@@ -1,0 +1,632 @@
+Vim
+	拷贝当前行				yy
+	拷贝当前向下五行		5yy
+	粘贴					p
+	粘贴五次				5p
+	删除当前行				dd
+	删除当前向下五行		5dd
+	查找关键字"Hello"		/Hello		n就是查找下一个
+	显示行号				:set nu
+	不显示行号				:set nonu
+	移到最后行				G
+	回到最初行				gg
+	移动到第20行			20shift+g
+	撤销					u
+	
+	
+	shutdown -h now			关机					halt
+	shutdown -h 1			一分钟后关机
+	shutdown -r now			重启					reboot
+	syn						将内存数据同步到磁盘	一般在关机前执行一次
+
+	切换用户				su 用户
+	返回切换前的用户		exit
+	注销用户				logout
+
+	useradd	用户			创建用户 会自动创建家目录
+	passwd 用户				给用户指定密码
+	userdel	用户			删除用户，保留家目录
+	userdel -r 用户			删除用户，不保留家目录
+	id 用户					查询用户
+
+	添加组					groupadd 组
+	删除组					groupdel 组
+	指定组添加用户			useradd -g 组 用户
+	修改用户所在组			usermod -g 组 用户	
+	
+	/etc/passwd文件内容：
+		tiger:x:505:507::/home/tiger:/bin/bash		用户名：口令：用户id：所在组id：家目录：登录shell
+		lion:x:506:506::/home/lion:/bin/bash
+		jerry:x:507:505::/home/jerry:/bin/bash
+		jake:x:508:505::/home/jake:/bin/bash
+	
+	/etc/shadow文件内容：全是加密内容，其中包含用户密码信息
+
+	/etc/group文件内容：
+		monster:x:506:								组名：口令：组id
+		tiger:x:507:
+		bandit:x:508:
+
+运行级别：
+	0：关机
+	1：单用户				无需密码
+	2：多用户无网络服务
+	3：多用户有网络服务
+	4：保留					待开发
+	5：图像界面
+	6：重启						
+
+	/etc/inittab文件可以指定运行级别：id:5:initdefault		init 级别数
+
+	找回密码：
+		开机时按control，e，第二行e，1进入单用户模式，enter，b  -》修改密码
+			
+
+
+	帮助指令				man 指令			help 指令
+
+
+
+	ls						显示当前目录下的文件		-a忽略隐藏文件		ls -al
+														-l长格式			ll
+	pwd						显示当前路径		
+	cd ~（.、..、/xx）		回到家目录		cd
+	mkdir 单级目录			mkdir -p 多级目录
+	rmdir					删除空目录				rm -rf 删除目录（递归、强制，不提示）
+	touch 文件				创建文件				touch a b···
+
+	拷贝					cp -r 原内容 新位置			-r参数表示递归拷贝	
+						   \cp							强制，覆盖时不提示
+
+	mv 原文件/目录 新文件/目录			可用于重命名
+
+
+ 
+	cat -n 文件|more		以只读的方式打开文件	-n显示行号	|管道命令	more分页浏览
+
+
+
+	more 文件
+
+		space		下翻一页
+		enter		下一行
+		q			退出
+		control+f	向下滚动一屏
+		control+b	向上滚动一屏
+		=			显示当前行号
+		:f			显示文件名及当前行号
+
+
+
+	less 文件
+
+		space		下翻一页	pagedown
+					上翻一页	pageup
+		/字符串		向下查找		n下查  N上查
+		?字符串		向上查找		n下查  N上查
+		q			退出
+
+	
+	>		输出覆盖重定向
+	>>		输出追加重定向
+
+		例子：ls -l > 文件
+			  ls -al >> 文件
+			  cat 文件1 > 文件2
+			  echo "内容" >> 文件		echo $PATH 输出环境变量
+			  cal >> 文件
+
+
+	head 文件			查看文件前10行
+	head -n 5 文件		查看文件前5行
+	tail 文件			查看文件后10行
+	tail -n 5 文件		查看文件后5行	
+	tail -f 文件		可以实时追踪文件的更新
+
+	ln -s 目录或文件 软连接名	创建软连接(快捷方式)，在软连接中pwd看到的是软连接路径
+	
+	history				查看历史命令	history 10 查看最近10个历史命令		!178	执行第178条历史命令
+
+	
+	显示时间			date
+						date "+%Y-%m-%d %H:%M:%S"
+	设置时间			date -s "2018-07-25 22:52:00"
+
+	查看日历			cal
+						cal 2020   查看2020年日历
+
+
+	查找				find 范围 -name x1 -user x2 -size (+/-)size -mtime +10		name名称、user用户、size大小、mtime时间，这里是10天前
+						locate 文件				一般先要updatedb
+
+	
+	cat a.txt|grep -ni yes		过滤查找	n显示行号，i忽略大小写，yes查询内容，|管道符，将前一个命令结果交给后一个命令处理
+
+	
+	获取文件名和绝对路径
+			
+			basename /root/shell/shell01.sh			//   shell01.sh
+			basename /root/shell/shell01.sh .sh		//   shell01
+			dirname /root/shell/shell01.sh			//  /root/shell
+
+
+压缩和解压
+
+	gzip 文件					gunzip 文件					只能操作.gz文件，不会保留原文件
+	zip	-r 文件.zip 存放路径	unzip -d 存放目录 文件		r递归压缩			
+	
+	打包	-z 打包同时压缩 -c产生.tar打包文件	-x解包.tar文件 -v显示详细信息 -f指定生成文件名或解包路径
+	
+	tar -zcvf a.txt b.txt					打包后文件格式为.tar.gz
+	tar -zxvf a.tar.gz -C 存放路径			解包
+
+
+组管理
+
+	在Linux系统中每个用户都必须属于一个组，每个文件都有所有者，所在组，其他组
+	
+	查看文件信息	ls -ahl
+	
+	所有者：文件创建时，谁创建的就是谁		
+
+		修改所有者		chown -R 用户 文件或目录			R为递归，针对目录
+
+	所在组：文件创建时，创建者所在组就是这个文件的所在组
+
+		修改所在组		chgrp -R 组 文件或目录			
+
+	其他组：非所在组的组
+
+	修改用户所在组					usermod -g 组 用户
+	修改用户登录的初始化目录		usermod -d 目录 用户
+
+	
+权限管理
+
+	drwxr-xr-x.   2 root root  4096 9月 23 20:11 srv		目录默认大小为4M		2位置表示：文件-硬连接数/目录-子目录数
+	drwxr-xr-x   13 root root    0 10月 11 20:59 sys		事件为最后修改时间
+
+	第0位：		文件类型：		-普通文件  d目录  l软连接  c设备  b硬盘/块文件
+ 	第1~3位：	所有者权限：		
+	第4~6位：	所在组用户权限：	r可读  w可写  x可执行  对该文件所在目录有写的权限才能删除文件
+	第7~9位：	其他组用户权限：
+	
+	修改权限：
+
+		chmod u=rwx,o+w,a-x	文件或目录		chmod 751 文件或目录
+
+
+任务调度
+
+	crontab		-e			编辑任务
+				-l			查询任务
+				-r			删除当前用户所有的crontab任务
+	service crond restart	重启任务调度
+
+		*/1	* * * * ll /ect >> /tmp/to.txt		每分钟会将ect目录的目录文件信息追加到tmp目录to.txt文件中
+
+		*	1.一小时的第几分钟
+			2.一天的第几小时
+			3.一月的第几天
+			4.一年的第几月
+			5.一周的星期几	0~7  0和7都代表周日
+
+		*	代表任何时间		
+		，	代表不连续时间		0 8,12,16 * * * 表示每天的8点、12点和16点执行
+		-	代表连续时间		0 5 * * 1-6		表示每周1到周6的5点执行
+	  */n	代表间隔时间		0/10 * * * *	表示每隔10分钟执行一次
+
+	一般流程：编写一个脚本文件（.sh）写入执行内容，并给其一个可执行权限，在编辑任务时设置时间并执行任务即可
+
+
+磁盘分区
+
+	查看系统分区和挂载情况					lsblk -f	f：详细信息，不加f可看大小			IDE硬盘：hdx~			SCSI硬盘：sdx~
+	
+		NAME   FSTYPE  LABEL            UUID                                 MOUNTPOINT
+		sr0    iso9660 CentOS_6.8_Final                                      /media/CentOS_6.8_Final
+		sda                                                                  
+		├─sda1 ext4                     303a2514-87ac-4b35-8780-8d2bf0e04118 /boot
+		├─sda2 swap                     17a43838-f4ab-4873-8f00-339a9b59eb70 [SWAP]
+		└─sda3 ext4                     8f7f621d-5b20-449e-b739-0b8c4caa816c /
+		分区情况	分区类型			分区的唯一标识						  挂载点
+
+	给虚拟机增加硬盘
+
+	1.通过设置创建硬盘，通过Linux操作系统终端重启Linux操作系统
+	2.分区				fdisk /dev/sdb						m显示命令列表	p显示磁盘分区 fdisk -l	n新增分区	d删除分区	w写入并退出
+						n p 1 enter（默认） enter w
+	3.格式化			mkfs -t ext4 /dev/sdb1				将设备格式化成ext4文件类型
+	4.挂载				创建一个目录，mount /dev/sdb1 /home/newdisk								取消挂载 umount /dev/sdb1		
+	5.设置为自动挂载	vim /etc/fstab
+	
+	/dev/sdb1                                 /home/newdisk           ext4    defaults        0 0		(这条是插入的新内容)
+	UUID=8f7f621d-5b20-449e-b739-0b8c4caa816c /                       ext4    defaults        1 1
+	UUID=303a2514-87ac-4b35-8780-8d2bf0e04118 /boot                   ext4    defaults        1 2
+	UUID=17a43838-f4ab-4873-8f00-339a9b59eb70 swap                    swap    defaults        0 0
+	tmpfs                   /dev/shm                tmpfs   defaults        0 0
+	devpts                  /dev/pts                devpts  gid=5,mode=620  0 0
+	sysfs                   /sys                    sysfs   defaults        0 0
+	proc                    /proc                   proc    defaults        0 0
+
+																										最后mount -a
+																				
+	磁盘情况查询：df -lh
+				  du -h 目录	s指定目录占用大小汇总   h带计量单位	  a含文件    c汇总值   --max-depth=~查询深度
+				  du -ahl --max-depth=1 /opt
+
+		案例：统计/home目录下的文件个数			ls -l /home | grep "^-" | wc -l
+			  ·······包括子文件					ls -lR /home | grep "^-" | wc -l
+			  以树状图显示目录结构			先安装 yum istall tree		然后使用 tree  命令
+
+
+网络配置
+
+	自动获取			每次ip地址可能会不一样
+
+	指定固定			修改文件：/etc/sysconfig/network-scripts/ifcfg-eth0
+
+					
+					DEVICE=eth0
+					TYPE=Ethernet
+					UUID=b06e1560-14fb-4795-88dd-e4ec36d9a0d2
+					ONBOOT=yes						//启用boot
+					NM_CONTROLLED=yes
+					BOOTPROTO=static				//以静态方式获取固定ip
+					DEFROUTE=yes
+					IPV4_FAILURE_FATAL=yes
+					IPV6INIT=no
+					NAME="System eth0"
+					IPADDR=192.168.184.130			//指定ip
+					GATEWAY=192.168.184.2			//指定网关
+					DNS1=192.168.184.2				//DNS与网关保持一致
+					PREFIX=24
+					HWADDR=00:0C:29:A5:11:CB
+					PEERDNS=yes
+					PEERROUTES=yes
+					LAST_CONNECT=1539334325
+					
+					service network restart  配置之后重启网络服务
+
+
+进程管理
+
+		ps -aux    a显示所有进程	u用户格式	x进程参数							pstree -p 树状显示进程		p：PID	u：用户
+		lsof -i :端口号
+
+		Warning: bad syntax, perhaps a bogus '-'? See /usr/share/doc/procps-3.2.8/FAQ
+		USER        PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+		root          1  0.1  0.0  19344  1552 ?        Ss   17:10   0:03 /sbin/init
+		root          2  0.0  0.0      0     0 ?        S    17:10   0:00 [kthreadd]
+		
+		PID：进程号			%CPU：占用CPU		%MEM占用物理内存		VSZ占用虚拟内存(kb)
+		RSS：占用物理内存	TTY：终端			START：启动时间			TIME：占用CPU时间		COMMAND进程的执行命令
+		START：状态：S休眠		N优先级低		R正在运行		D短期等待		Z僵死		T被跟踪或被停止等待			s先导进程
+	
+
+		ps -ef		查看父进程		e显示所有进程     f全格式
+
+		UID         PID   PPID  C STIME TTY          TIME CMD
+		root          1      0  0 17:10 ?        00:00:03 /sbin/init
+		root          2      0  0 17:10 ?        00:00:00 [kthreadd]
+		root          3      2  0 17:10 ?        00:00:00 [migration/0]
+
+		UID：用户ID		PPID：父进程ID		C数字越大优先级越低		STIME：启动时间		CMD：参数
+
+		ps -ef | grep sshd	查看sshd的父进程信息
+
+	结束进程
+	
+			kill -9 进程号			9：强制			
+			killall 进程名			支持通配符			
+
+
+服务
+
+	service	服务名 start/stop/restart/reload/status				关闭或启动服务会立刻生效，但重启系统后还是会回归之前状态		
+	telnet ip 端口	  windows命令		查看端口是否开启
+	ll /etc/init.d/		列出系统服务							setup	->   系统服务		也可以查看并且可以开启和关闭
+	
+	服务的运行级别和系统的运行级别是一样的					vi /etc/inittab		可以修改
+
+	chkconfig命令可以给每个服务的每个运行级别设置自启动或者关闭
+
+		chkconfig --list	查看		chkconfig 服务名 --list		指定查看		chkconfig --level ~ 服务名 on/off
+																					不指定 "--level ~" 为关闭所有
+动态监控进程
+
+	top 			d更新时间，默认为3s		i不显示闲置或僵死进程		p指定进程id
+					交互：P以CPU使用率排序	M以内存使用率排序		N以PID排序		q退出		u指定用户		k结束进程
+
+	top - 19:34:28 up 50 min,  2 users,  load average: 0.63, 0.36, 0.35					当前时间/系统运行时间/登录用户数量/负载均衡
+	Tasks: 201 total,   1 running, 200 sleeping,   0 stopped,   0 zombie				总任务数/正在运行数/休眠数/停止数/僵死数
+	Cpu(s):  6.1%us,  1.0%sy,  0.0%ni, 91.6%id,  0.0%wa,  1.3%hi,  0.0%si,  0.0%st		cup占用率：us用户 sy系统 id空闲 
+	Mem:   2038376k total,   612516k used,  1425860k free,    25340k buffers			内存使用情况
+	Swap:  2097148k total,        0k used,  2097148k free,   230680k cached				内存不够用了才会使用Swap分区
+
+	   PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND                            
+	  2709 root      20   0  216m  31m  11m S 31.8  1.6   0:45.89 Xorg                               
+	  3468 root      20   0  341m  17m  11m S  6.0  0.9   0:10.11 gnome-terminal                     
+	  1682 root      20   0  163m 7832 4480 S  1.0  0.4   0:16.66 vmtoolsd                           
+	  1849 root      20   0  203m 5352 4416 S  1.0  0.3   0:02.54 ManagementAgent                    
+	  3047 root      20   0  303m  17m  14m S  1.0  0.9   0:12.36 vmtoolsd                           
+	  3596 root      20   0 15132 1308  940 R  1.0  0.1   0:00.11 top                   
+	  
+	netstat -anp		查看所有的网络服务		an按一定顺序排序		p显示哪个进程正在被调用
+
+				0.0.0.0.0:22    IPV4
+				0 :::22         IPV6
+
+
+RPM包
+
+	查看已安装的rpm		rpm -qa			rpm -qa | grep firefox							
+										el6.centos.x86_64表示64位系统		i686、i386表示32位系统		noarch表示通用
+
+		rpm -q 软件包				rpm -qi 软件包   查询软件包信息			rpm -ql 软件包
+		
+		rpm -qf 文件/目录			查询文件/目录所属软件包
+
+		卸载		rpm -e 软件包			如果软件包有依赖，会出现提示			rpm -e --nodeps 软件包   强制
+		安装		rpm -ivh 软件包路径		i=install	v=verbose提示	h=hash进度条
+
+					这是从挂载的centos的iso文件中找到的rpm软件包
+					cp /media/CentOS_6.8_Final/Packages/firefox-45.0.1-1.el6.centos.x86_64.rpm /opt/
+					rpm -ivh firefox-45.0.1-1.el6.centos.x86_64.rpm 
+
+yum		yum list | grep firefox    yum install firefox
+
+
+
+JavaEE
+
+	JDK安装
+
+		解压文件，配置环境变量：vim /etc/profile，在尾行追加内容：		
+
+		JAVA_HOME=/opt/jdk1.7.0_79
+		PATH=/opt/jdk1.7.0_79/bin:$PATH
+		export JAVA_HOME PATH				//输出变量使环境变量生效				注销用户即可生效
+	
+	Tomcat安装
+		
+		解压文件，使防火墙开放8080端口，service iptables restart，到解压目录的bin目录下 ./startup.sh 即可开启服务器
+
+		vim/etc/sysconfig/iptables
+
+	Eclipse安装		解压即可用
+
+	MySql安装		
+
+		1.rpm -qa | grep mysql
+		2.rpm -e --nodeps mysql-libs
+		3.yum -y install make gcc-c++ cmake bison-devel  ncurses-devel
+		4.tar -zxvf /opt/mysql-5.6.14.tar.gz
+		5.编译，到解压目录下执行命令：cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/usr/local/mysql/data -DSYSCONFDIR=/etc -DWITH_MYISAM_STORAGE_ENGINE=1 -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MEMORY_STORAGE_ENGINE=1 -DWITH_READLINE=1 -DMYSQL_UNIX_ADDR=/var/lib/mysql/mysql.sock -DMYSQL_TCP_PORT=3306 -DENABLED_LOCAL_INFILE=1 -DWITH_PARTITION_STORAGE_ENGINE=1 -DEXTRA_CHARSETS=all -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci
+		6.make && make install		执行完make立刻执行make install
+		7.配置Mysql
+					groupadd mysql
+					useradd -g mysql mysql
+					chown mysql:mysql /usr/local/mysql/
+		8.初始化
+					cd /usr/local/mysql	
+					scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data --user=mysql 
+		9.启动
+					在	/usr/local/mysql	目录下执行：
+					cp support-files/mysql.server /etc/init.d/mysql
+					chkconfig mysql on									//设置自启动
+					service mysql start									//启动
+					到bin目录下 ./mysql -uroot 即可进入
+		10.设置密码
+							set password = password('root')
+		11.配置环境变量
+							vim /etc/profile
+							添加mysql内容：PATH=/opt/jdk1.7.0_79/bin:/usr/local/mysql/bin:$PATH
+							刷新：source /etc/profile
+			
+Shell
+		vim /root/shell/shell01.sh
+
+			#!/bin/bash
+			echo "Hello World!"
+
+		 执行的两种方式：chmod 744 /root/shell/shell01.sh		/root/shell/shell01.sh
+						 sh /root/shell/shell01.sh
+
+	shell变量
+		
+		1.系统变量和自定义变量			查看变量：set		输出变量：echo $变量
+			
+		2.定义变量 变量=值		撤销变量 unset 变量		  声明静态变量 readonly 变量		静态变量不能unset
+		
+		定义变量的规则：名称可以由字母、数字、下划线组成，但不能由数字开头，等号两边不能由空格，一般大写
+
+			将结果返回给变量	变量=`内容`		变量=$(内容)
+
+	设置环境变量 exprot 变量		需要刷新 source···			多行注释:<<! enter  ````  enter  !
+			
+	位置参数	$~:输出第~个参数 ./xxx.sh 就是$0	$*:把所有参数当成整体输出（不包括$0）
+				$#:输出参数个数（不包括$0）			$@:把所有参数当成整体输出，会将每个参数区分对待（不包括$0）
+	
+	预定义变量	
+				$$：当前进程号		$!:最后的进程号		  $?:最后执行的命令的执行结果，0为正确		./mysholl.sh &:以后台的方式执行脚本
+
+	运算：$((运算式)) 或 $[运算式]	还可以使用 expr 但运算符左右需要空格 RESULT = `expr 2 + 3`	注意乘需要转义：\*
+
+	判断
+
+		常用判断条件
+
+			1)两个整数的比较				= 字符串比较
+											-lt 小于
+											-le 小于等于
+											-eq 等于
+											-gt 大于
+											-ge 大于等于
+											-ne 不等于
+			
+			2) 按照文件权限进行判断			-r 有读的权限 [ -r 文件 ]
+											-w 有写的权限
+											-x 有执行的权限
+										
+			3)按照文件类型进行判断			-f 文件存在并且是一个常规的文件
+											-e 文件存在
+											-d 文件存在并是一个目录
+
+
+	流程控制
+
+			if 判断
+
+				if [ 条件判断式 ]			中括号两边必须有空格(每边)
+				then
+					程序
+				fi							//结束
+					
+
+
+				if [ 条件判断式 ]
+				then
+					程序
+				elif [条件判断式]
+				then
+					程序
+				fi
+
+					实例：注意需要加：#!/bin/bash
+
+					if [ "ok100" = "ok200" ]
+					then
+						echo "equal"
+					fi
+
+					if [ 23 -gt 22 ]
+					then 
+						echo "大于"
+					fi
+
+					if [ -e /root/shell/a.txt ]
+					then 
+					    echo "存在"
+					fi
+
+					if [ $1 -ge 60 ]
+					then 
+						echo "及格"
+					elif [ $1 -lt 60 ] 
+					then 
+						echo "不及格"
+					fi
+
+		case语句
+
+			case $1 in
+			"1")
+					echo "周一"
+			;;
+			"2")
+					echo "周二"
+			;;
+			*)
+					echo "other"
+			;;
+			esac
+
+	===================
+
+		for循环1
+
+				for i in "$*"
+				do
+					echo "the num is $i"
+				done
+				echo "--------------------------"
+				for i in "$@"
+				do
+					echo "the num is $i"
+				done
+
+				结果	the num is 1 2 3
+						--------------------------
+						the num is 1
+						the num is 2
+						the num is 3
+
+		for循环2
+			
+				SUM=0
+				for((i=1;i<=100;i++))
+				do
+						SUM=$[$SUM+$i]
+				done
+				echo $SUM  
+
+	===================
+
+		While	
+
+			i=1
+			SUM=0
+			while [ $i -le $1 ]
+			do
+				SUM=$[$SUM+$i]
+				i=$[$i+1]
+			done
+			echo "$SUM"	
+
+	===================
+
+		读取控制的输入
+
+			read -p "告诉我，你的年龄：" age
+			echo "$age"
+			read -t 3 -p "3秒内，再确定一次，是多少?" confirmAge
+			echo "$confirmAge"
+
+	===================
+
+		自定义函数
+
+			function getSum(){
+				SUM=$[$n1+$n2]
+				echo "$SUM"
+			}
+			read -p "请输入求和运算的第一个数：" n1
+			read -p "请输入求和运算的第二个数：" n2
+			getSum $n1 $n2
+
+	===================
+
+		综合案例
+
+			1)每天凌晨 2:10 备份 mydatabase 数据库到 /data/backup/db
+			2)备份后的文件要求以备份时间为文件名，并打包成 .tar.gz 的形式，比如：2018-03-12_230201.tar.gz
+			3)在备份的同时，检查是否有 10 天前备份的数据库文件，如果有就将其删除。
+				
+
+				1.vim shell09.sh
+
+				2.	#!/bin/bash
+					BACKUP=/data/backup/db
+					DATETIME=`date +%Y_%m_%d_%H%M%S`
+					HOST=localhost
+					DB_USER=root
+					DB_PWD=123
+					DATABASE=mydatabase
+					[ ! -d "$BACKUP/$DATETIME" ] && mkdir -p "$BACKUP/$DATETIME"
+					mysqldump -u$DB_USER -p$DB_PWD --host=$HOST $DATABASE | gzip > $BACKUP/$DATETIME/$DATETIME.sql.gz
+					cd $BACKUP
+					tar -zcvf $DATETIME.tar.gz $DATETIME
+					[ -d "$BACKUP/$DATETIME" ] && rm -rf $BACKUP/$DATETIME
+					find $BACKUP -mtime +10 -name "*.tar.gz" -exec rm -rf {} \;
+
+				3.chmod 744 shell09.sh
+
+				4.crontab -e
+
+				5.10 2 * * * /root/shell/shell09.sh 
+
+
+在CentOS7里面  iptables 改名为 firewalld
+
+查看Linux系统位数		getconf LONG_BIT
